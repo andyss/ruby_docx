@@ -1,9 +1,8 @@
 require 'nokogiri'
 require 'zip'
 
-require "ruby_docx/elements/element"
-require "ruby_docx/elements/paragraph"
-require "ruby_docx/elements/table"
+require "ruby_docx/elements"
+require "ruby_docx/relation"
 
 module RubyDocx
 
@@ -27,7 +26,43 @@ module RubyDocx
     end
 
     def paragraphs
-      @doc.xpath('//w:document//w:body//w:p').map { |node| RubyDocx::Elements::Paragraph.new node }
+      @doc.xpath('//w:document//w:body//w:p').map { |node|
+        RubyDocx::Elements::Paragraph.new self, node
+      }
+    end
+
+    def setup_image(img)
+      img.zip = @zip
+
+      relation = self.find_relation_by_id(img.relation_id)
+
+      img.path = relation.value if relation
+
+      img
+    end
+
+    def images
+      @doc.xpath('//w:pict').map do |node|
+        RubyDocx::Elements::Image.new self, node
+      end
+    end
+
+    def relations
+      @rels.xpath("//Relationship").map do |node|
+        RubyDocx::Relation.new node
+      end
+    end
+
+    def find_relation_by_id(relation_id)
+      return nil unless relation_id
+
+      self.relations.map do |relation|
+        if relation.relation_id.to_s == relation_id
+          return relation
+        end
+      end
+
+      nil
     end
 
     def inspect

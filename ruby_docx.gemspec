@@ -32,5 +32,8 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'nokogiri', '~> 1.5'
   spec.add_dependency 'rubyzip',  '~> 1.1.6'
+  spec.add_dependency 'mimemagic'
+  spec.add_dependency 'texmath-ruby'
+  spec.add_dependency 'calculus'
 
 end
