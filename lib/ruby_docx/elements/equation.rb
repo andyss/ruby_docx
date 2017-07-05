@@ -24,13 +24,23 @@ module RubyDocx::Elements
     def replace_with_latex(txt)
     end
 
-    def to_svg
+    def to_png
+      @path ||= Calculus::Expression.new("#{self.to_latex}", :parse => false).to_png
+      File.read(path)
     end
 
-    def to_png
+    def base64_data
+      "data:image/png;base64,#{Base64.strict_encode64(self.to_png)}"
+    end
+
+    def save(path)
+      file = File.new(path, "wb")
+      file.write(self.to_png)
+      file.close
     end
 
     def to_html
+      "<img src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" />"
     end
 
     def to_s
