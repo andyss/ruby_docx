@@ -24,7 +24,7 @@ module RubyDocx::Elements
     end
 
     def to_html
-      "#{self.content}"
+      "#{self.content.gsub(/ /, "&nbsp;")}"
     end
 
   end

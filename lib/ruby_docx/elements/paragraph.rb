@@ -6,7 +6,12 @@ module RubyDocx::Elements
     end
 
     def to_html
-      "<p>#{self.elements.map(&:to_html).join}</p>"
+      if self.elements.size <= 0
+        "<p>&nbsp;</p>"
+      else
+        "<p>#{self.elements.map(&:to_html).join}</p>"
+      end
+
     end
   end
 end

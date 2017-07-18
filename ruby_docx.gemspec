@@ -35,5 +35,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'mimemagic'
   spec.add_dependency 'texmath-ruby'
   spec.add_dependency 'calculus'
-
+  spec.add_dependency 'mathtype'
 end

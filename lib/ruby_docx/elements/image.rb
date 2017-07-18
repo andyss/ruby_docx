@@ -7,11 +7,16 @@ module RubyDocx::Elements
     attr_reader :width, :height
 
     def data
-      @zip.read("word/#{@path}")
+      if self.path
+        @zip.read("word/#{@path}")
+      else
+
+      end
+
     end
 
     def relation_id
-      element = @node.xpath("//v:imagedata").first
+      element = @node.xpath(".//v:imagedata").first
       if element && element.attributes.keys.index("id")
         element.attributes["id"].value
       else
@@ -24,7 +29,7 @@ module RubyDocx::Elements
     end
 
     def style
-      element = @node.xpath("//v:shape").first
+      element = @node.xpath(".//v:shape").first
 
       if element && element.attributes.keys.index("style")
         element.attributes["style"].value
@@ -34,7 +39,7 @@ module RubyDocx::Elements
     end
 
     def title
-      element = @node.xpath("//v:imagedata").first
+      element = @node.xpath(".//v:imagedata").first
       if element && element.attributes.keys.index("title")
         element.attributes["title"].value
       else

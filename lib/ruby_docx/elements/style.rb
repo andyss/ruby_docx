@@ -23,8 +23,25 @@ module RubyDocx::Elements
       false
     end
 
+    def align
+      ele = @node.xpath(".//w:jc").last
+
+      if ele
+        v = ele.attributes["val"].value.to_s
+        if v == "start"
+          "left"
+        elsif v == "end"
+          "right"
+        elsif v == "center"
+          "center"
+        end
+      else
+        nil
+      end
+    end
+
     def font_size
-      ele = @node.xpath("//w:sz").last
+      ele = @node.xpath(".//w:sz").last
 
       if ele
         v = ele.attributes["val"].value
@@ -36,7 +53,7 @@ module RubyDocx::Elements
     end
 
     def color
-      ele = @node.xpath("//w:color").last
+      ele = @node.xpath(".//w:color").last
 
       if ele
         v = ele.attributes["val"].value
@@ -51,7 +68,7 @@ module RubyDocx::Elements
     end
 
     def font_name
-      ele = @node.xpath("//w:rFonts").last
+      ele = @node.xpath(".//w:rFonts").last
 
       if ele
         ascii = ele.attributes["ascii"]
@@ -66,7 +83,7 @@ module RubyDocx::Elements
 
 
     def fonts
-      ele = @node.xpath("//w:rFonts").last
+      ele = @node.xpath(".//w:rFonts").last
 
       if ele
         ascii = ele.attributes["ascii"]

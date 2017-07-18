@@ -5,7 +5,7 @@ module RubyDocx::Elements
   class Equation < Element
 
     def to_omml
-      ele = @node.xpath("//m:oMath").first
+      ele = @node.xpath(".//m:oMath").first
       ele.to_s
     end
 
@@ -26,7 +26,7 @@ module RubyDocx::Elements
 
     def to_png
       @path ||= Calculus::Expression.new("#{self.to_latex}", :parse => false).to_png
-      File.read(path)
+      File.read(@path)
     end
 
     def base64_data
@@ -40,7 +40,7 @@ module RubyDocx::Elements
     end
 
     def to_html
-      "<img src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" />"
+      "<img src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" style='width: 30px;' />"
     end
 
     def to_s

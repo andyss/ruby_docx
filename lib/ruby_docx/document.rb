@@ -26,16 +26,42 @@ module RubyDocx
     end
 
     def paragraphs
-      @doc.xpath('//w:document//w:body//w:p').map { |node|
-        RubyDocx::Elements::Paragraph.new self, node
+      @doc.xpath('//w:document/w:body/w:p|//w:document/w:body/w:tbl').map { |node|
+        if node.name.to_s == "tbl"
+          RubyDocx::Elements::Table.new self, node
+        else
+          RubyDocx::Elements::Paragraph.new self, node
+        end
+
       }
+    end
+
+    def to_html
+      self.paragraphs.map(&:to_html).join
+    end
+
+    def setup_drawing(drawing)
+      drawing.zip = @zip
+
+      if drawing.node.name.to_s == "drawing"
+        element = drawing.node.xpath(".//a:blip", 'a' => "http://schemas.openxmlformats.org/drawingml/2006/picture").first
+        # p element, element.attributes["name"].value
+        # drawing.path = "media/#{element.attributes["name"].value}"
+
+        relation = self.find_relation_by_id(drawing.relation_id)
+        # p relation
+        drawing.path = relation.value if relation
+        # p drawing.path
+
+      end
+
+      drawing
     end
 
     def setup_image(img)
       img.zip = @zip
 
       relation = self.find_relation_by_id(img.relation_id)
-
       img.path = relation.value if relation
 
       img
