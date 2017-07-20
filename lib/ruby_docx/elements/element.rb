@@ -13,6 +13,8 @@ module RubyDocx::Elements
         @doc.setup_image(self)
       elsif self.node.name.to_s == "drawing"
         @doc.setup_drawing(self)
+      elsif self.node.name.to_s == "object"
+        @doc.setup_object(self)
       end
 
       self.parse_elements

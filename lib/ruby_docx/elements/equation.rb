@@ -40,7 +40,7 @@ module RubyDocx::Elements
     end
 
     def to_html
-      "<img src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" style='width: 30px;' />"
+      "<img src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" style='height: 13px;' />"
     end
 
     def to_s

@@ -67,6 +67,15 @@ module RubyDocx
       img
     end
 
+    def setup_object(obj)
+      obj.zip = @zip
+
+      relation = self.find_relation_by_id(obj.relation_id)
+      obj.path = relation.value if relation
+
+      obj
+    end
+
     def images
       @doc.xpath('//w:pict').map do |node|
         RubyDocx::Elements::Image.new self, node
