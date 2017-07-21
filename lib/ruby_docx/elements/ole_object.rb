@@ -62,6 +62,10 @@ module RubyDocx::Elements
       File.read(@image_path)
     end
 
+    def data
+      self.to_png
+    end
+
     def base64_data
       "data:image/png;base64,#{Base64.strict_encode64(self.to_png)}"
     end
@@ -72,11 +76,24 @@ module RubyDocx::Elements
       file.close
     end
 
+    def replace(lnk)
+      @link = lnk
+    end
+
     def to_html
       if self.style
-        "<img src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" style='#{self.style}' />"
+        if @link
+          "<img src='#{@link}' data-latex=\"#{self.to_latex}\" style='#{self.style}' />"
+        else
+          "<img src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" style='#{self.style}' />"
+        end
+
       else
-        "<img src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" style='height: 13px;' />"
+        if @link
+          "<img src='#{@link}' data-latex=\"#{self.to_latex}\" style='height: 13px;' />"
+        else
+          "<img src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" style='height: 13px;' />"
+        end
       end
 
     end

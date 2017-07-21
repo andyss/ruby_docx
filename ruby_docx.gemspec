@@ -4,20 +4,20 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'ruby_docx/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "ruby_docx"
+  spec.name          = "ruby_docx_beta"
   spec.version       = RubyDocx::VERSION
   spec.authors       = ["Joey Lin"]
   spec.email         = ["joeyoooooo@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{convert docx to html}
+  spec.description   = %q{convert docx to html}
+  spec.homepage      = "https://github.com/andyss/ruby_docx.git"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
   # delete this section to allow pushing this gem to any host.
   if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
+    spec.metadata['allowed_push_host'] = "https://rubygems.org"
   else
     raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
   end

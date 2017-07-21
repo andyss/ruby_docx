@@ -4,6 +4,8 @@ require 'calculus'
 module RubyDocx::Elements
   class Equation < Element
 
+    attr_accessor :link
+
     def to_omml
       ele = @node.xpath(".//m:oMath").first
       ele.to_s
@@ -29,6 +31,10 @@ module RubyDocx::Elements
       File.read(@path)
     end
 
+    def data
+      self.to_png
+    end
+
     def base64_data
       "data:image/png;base64,#{Base64.strict_encode64(self.to_png)}"
     end
@@ -39,8 +45,16 @@ module RubyDocx::Elements
       file.close
     end
 
+    def replace(lnk)
+      @link = lnk
+    end
+
     def to_html
-      "<img src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" style='height: 13px;' />"
+      if @link
+        "<img src='#{@link}' data-latex=\"#{self.to_latex}\" style='height: 13px;' />"
+      else
+        "<img src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" style='height: 13px;' />"
+      end
     end
 
     def to_s
