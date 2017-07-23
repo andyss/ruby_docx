@@ -26,7 +26,7 @@ module RubyDocx
     end
 
     def paragraphs
-      @doc.xpath('//w:document/w:body/w:p|//w:document/w:body/w:tbl').map { |node|
+      @paragraphs ||= @doc.xpath('//w:document/w:body/w:p|//w:document/w:body/w:tbl').map { |node|
         if node.name.to_s == "tbl"
           RubyDocx::Elements::Table.new self, node
         else

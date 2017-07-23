@@ -52,6 +52,14 @@ module RubyDocx::Elements
 
     end
 
+    def width
+      nil
+    end
+
+    def height
+      nil
+    end
+
     def color
       ele = @node.xpath(".//w:color").last
 
