@@ -82,7 +82,7 @@ module RubyDocx::Elements
 
     def style
       if self.size
-        "width: #{self.size[0]}px; height: #{self.size[0]}px;"
+        "width: #{self.size[0]}px; height: #{self.size[1]}px;"
       else
         nil
       end
