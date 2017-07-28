@@ -31,7 +31,7 @@ module RubyDocx::Elements
     def width
       ext = @node.xpath(".//a:ext", "a" => "http://schemas.openxmlformats.org/drawingml/2006/main").first
 
-      ext["cx"].value.to_i/9525.0
+      ext.attributes["cx"].value.to_i/9525.0
     rescue
       nil
     end
@@ -39,7 +39,7 @@ module RubyDocx::Elements
     def height
       ext = @node.xpath(".//a:ext", "a" => "http://schemas.openxmlformats.org/drawingml/2006/main").first
 
-      ext["cy"].value.to_i/9525.0
+      ext.attributes["cy"].value.to_i/9525.0
     rescue
       nil
     end
