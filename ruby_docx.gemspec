@@ -37,5 +37,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'calculus'
   spec.add_dependency 'mathtype'
   spec.add_dependency 'pry'
+  spec.add_dependency 'image_size'
   spec.add_dependency 'mathtype_to_mathml'
 end

@@ -26,14 +26,14 @@ module RubyDocx::Elements
     attr_accessor :path, :zip, :link
     attr_accessor :image_path
 
-    def style
-      element = @node.xpath(".//v:shape").first
-      if element && element.attributes.keys.index("style")
-        element.attributes["style"].value
-      else
-        nil
-      end
-    end
+    # def style
+    #   element = @node.xpath(".//v:shape").first
+    #   if element && element.attributes.keys.index("style")
+    #     element.attributes["style"].value
+    #   else
+    #     nil
+    #   end
+    # end
 
     def relation_id
       element = @node.xpath(".//o:OLEObject").first
@@ -70,6 +70,24 @@ module RubyDocx::Elements
       "data:image/png;base64,#{Base64.strict_encode64(self.to_png)}"
     end
 
+    def size
+      return @size if @size
+
+      sz = ImageSize.new(self.data)
+
+      @size = [sz.width/7.2, sz.height/7.2]
+    rescue
+      nil
+    end
+
+    def style
+      if self.size
+        "width: #{self.size[0]}px; height: #{self.size[0]}px;"
+      else
+        nil
+      end
+    end
+
     def save(path)
       file = File.new(path, "wb")
       file.write(self.to_png)
@@ -83,16 +101,16 @@ module RubyDocx::Elements
     def to_html
       if self.style
         if @link
-          "<img src='#{@link}' data-latex=\"#{self.to_latex}\" data-mathml=\"#{self.to_mathml}\" style='#{self.style}' />"
+          "<img class=\"Wirisformula\" role='math' src='#{@link}' data-latex=\"#{self.to_latex}\" data-mathml=\"#{self.to_mathml.gsub("\n", "").gsub("<", "«").gsub(">", "»").gsub("\"", "¨")}\" style='#{self.style}' />"
         else
-          "<img src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" data-mathml=\"#{self.to_mathml}\" style='#{self.style}' />"
+          "<img class=\"Wirisformula\" role='math' src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" data-mathml=\"#{self.to_mathml.gsub("\n", "").gsub("<", "«").gsub(">", "»").gsub("\"", "¨")}\" style='#{self.style}' />"
         end
 
       else
         if @link
-          "<img src='#{@link}' data-latex=\"#{self.to_latex}\" data-mathml=\"#{self.to_mathml}\" style='height: 13px;' />"
+          "<img class=\"Wirisformula\" role='math' src='#{@link}' data-latex=\"#{self.to_latex}\" data-mathml=\"#{self.to_mathml.gsub("\n", "").gsub("<", "«").gsub(">", "»").gsub("\"", "¨")}\" style='height: 13px;' />"
         else
-          "<img src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" data-mathml=\"#{self.to_mathml}\" style='height: 13px;' />"
+          "<img class=\"Wirisformula\" role='math' src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" data-mathml=\"#{self.to_mathml.gsub("\n", "").gsub("<", "«").gsub(">", "»").gsub("\"", "¨")}\" style='height: 13px;' />"
         end
       end
 

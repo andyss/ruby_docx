@@ -1,5 +1,6 @@
 require 'texmath'
 require 'calculus'
+require "image_size"
 
 module RubyDocx::Elements
   class Equation < Element
@@ -31,6 +32,25 @@ module RubyDocx::Elements
       File.read(@path)
     end
 
+    def size
+      return @size if @size
+
+      sz = ImageSize.new(self.data)
+
+      @size = [sz.width/7.2, sz.height/7.2]
+    rescue
+      nil
+    end
+
+    def style
+      if self.size
+        "width: #{self.size[0]}px; height: #{self.size[0]}px;"
+      else
+        ""
+      end
+    end
+
+
     def data
       self.to_png
     end
@@ -51,9 +71,9 @@ module RubyDocx::Elements
 
     def to_html
       if @link
-        "<img src='#{@link}' data-latex=\"#{self.to_latex}\" data-mathml=\"#{self.to_mathml}\" style='height: 13px;' />"
+        "<img class=\"Wirisformula\" role='math' src='#{@link}' data-latex=\"#{self.to_latex}\" data-mathml=\"#{self.to_mathml.gsub("\n", "").gsub("<", "«").gsub(">", "»").gsub("\"", "¨")}\" style='#{self.style}' />"
       else
-        "<img src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" data-mathml=\"#{self.to_mathml}\" style='height: 13px;' />"
+        "<img class=\"Wirisformula\" role='math' src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" data-mathml=\"#{self.to_mathml.gsub("\n", "").gsub("<", "«").gsub(">", "»").gsub("\"", "¨")}\" style='#{self.style}' />"
       end
     end
 
