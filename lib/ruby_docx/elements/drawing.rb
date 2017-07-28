@@ -28,13 +28,42 @@ module RubyDocx::Elements
       @link = lnk
     end
 
+    def width
+      ext = @node.xpath(".//a:ext", "a" => "http://schemas.openxmlformats.org/drawingml/2006/main").first
+
+      ext["cx"].value.to_i/9525.0
+    rescue
+      nil
+    end
+
+    def height
+      ext = @node.xpath(".//a:ext", "a" => "http://schemas.openxmlformats.org/drawingml/2006/main").first
+
+      ext["cy"].value.to_i/9525.0
+    rescue
+      nil
+    end
+
     def style
       element = @node.xpath(".//v:shape").first
 
       if element && element.attributes.keys.index("style")
         element.attributes["style"].value
       else
-        nil
+        s = ""
+        if self.width
+          s += "width: #{self.width}px;"
+        end
+
+        if self.height
+          s += "height: #{self.height}px;"
+        end
+
+        if self.width || self.height
+          s
+        else
+          nil
+        end
       end
     end
 

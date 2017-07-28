@@ -51,9 +51,9 @@ module RubyDocx::Elements
 
     def to_html
       if @link
-        "<img src='#{@link}' data-latex=\"#{self.to_latex}\" style='height: 13px;' />"
+        "<img src='#{@link}' data-latex=\"#{self.to_latex}\" data-mathml=\"#{self.to_mathml}\" style='height: 13px;' />"
       else
-        "<img src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" style='height: 13px;' />"
+        "<img src='#{self.base64_data}' data-latex=\"#{self.to_latex}\" data-mathml=\"#{self.to_mathml}\" style='height: 13px;' />"
       end
     end
 
